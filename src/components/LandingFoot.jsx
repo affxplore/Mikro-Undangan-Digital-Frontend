@@ -13,7 +13,7 @@ import {
 export default function Footer() {
   return (
     <footer className="bg-white/50 text-gray-700 py-2 px-2">
-       <div className="mx-auto  bg-white w-full p-5 h-60" data-swiper-parallax="-40">
+    <div className="mx-auto  bg-white w-full p-5 h-60" data-swiper-parallax="-40">
                       <div className="grid grid-cols-1 gap-8 sm:grid-cols-3" >
                         <div>
                           <div className="mb-2 text-lg font-semibold">Mikro Undangan</div>
@@ -46,5 +46,3 @@ export default function Footer() {
     </footer>
   );
 }
-
-

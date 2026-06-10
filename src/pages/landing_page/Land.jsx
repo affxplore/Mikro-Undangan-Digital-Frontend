@@ -1,4 +1,8 @@
 import React, { useMemo, useRef, useState, useEffect } from "react";
+<<<<<<< HEAD
+=======
+import { Link, useNavigate } from 'react-router-dom';
+>>>>>>> 8850f48e5a09b0d1f89544b880aff14bec030b6d
 import { Swiper, SwiperSlide } from "swiper/react";
 import inv1 from "../../assets/img/blue.jpg";
 import inv2 from "../../assets/img/birthday.jpg";
@@ -12,6 +16,10 @@ import add6 from "../../../public/pict/gambar8.webp";
 import add7 from "../../../public/pict/gambar5.jpg";
 import add8 from "../../../public/pict/gambar7.webp";
 import LandingNav from "../../components/LandingNavbar";
+<<<<<<< HEAD
+=======
+
+>>>>>>> 8850f48e5a09b0d1f89544b880aff14bec030b6d
 import {
   Mousewheel,
   Pagination,
@@ -71,7 +79,11 @@ const Section = ({ children, className = "", id }) => (
   <section
     id={id}
     className={clsx(
+<<<<<<< HEAD
       "relative flex h-screen w-full items-center justify-center overflow-hidden px-6",
+=======
+      "relative flex min-h-screen w-full justify-center overflow-hidden px-6 pt-24 pb-12",
+>>>>>>> 8850f48e5a09b0d1f89544b880aff14bec030b6d
       className
     )}
   >
@@ -132,13 +144,22 @@ const CTAButtons = () => (
     >
       Lihat Template
     </a>
+<<<<<<< HEAD
     <a
       href="#register"
+=======
+    <Link
+      to="/regis"
+>>>>>>> 8850f48e5a09b0d1f89544b880aff14bec030b6d
       className="rounded-full border px-5 py-2.5 text-sm transition hover:translate-y-[-1px] focus:outline-none focus:ring-2 focus:ring-offset-2"
       style={{ borderColor: `${C.deep}60`, color: C.deep, backgroundColor: `${C.pale}7a` }}
     >
       Coba Gratis
+<<<<<<< HEAD
     </a>
+=======
+    </Link>
+>>>>>>> 8850f48e5a09b0d1f89544b880aff14bec030b6d
   </div>
 );
 
@@ -272,6 +293,11 @@ const categories = [
 ];
 
 const SlideCategories = () => {
+<<<<<<< HEAD
+=======
+  const navigate = useNavigate();
+
+>>>>>>> 8850f48e5a09b0d1f89544b880aff14bec030b6d
   const categoryData = [
     { name: "Pernikahan", icon: "💍", count: "12+ Template", color: "from-rose-400 to-pink-500" },
     { name: "Ulang Tahun", icon: "🎂", count: "8+ Template", color: "from-yellow-400 to-orange-500" },
@@ -318,6 +344,10 @@ const SlideCategories = () => {
         {categoryData.map((category, index) => (
           <motion.button
             key={category.name}
+<<<<<<< HEAD
+=======
+            onClick={() => navigate(`/tema?category=${category.name.toLowerCase()}`)}
+>>>>>>> 8850f48e5a09b0d1f89544b880aff14bec030b6d
             variants={fadeUp}
             initial="hidden"
             animate="show"
@@ -331,7 +361,11 @@ const SlideCategories = () => {
             }}
           >
             <div
+<<<<<<< HEAD
               className={`absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-10 bg-gradient-to-br ${category.color}`}
+=======
+              className={`absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-10 bg-gradien-to-br ${category.color}`}
+>>>>>>> 8850f48e5a09b0d1f89544b880aff14bec030b6d
             />
             
             <div className="mb-3 text-2xl transition-transform duration-300 group-hover:scale-110">
@@ -462,6 +496,7 @@ const previews = [
 ];
 
 const SlideShowcase = () => {
+<<<<<<< HEAD
   const getSliceCount = () => {
     if (typeof window === 'undefined') return 8; // Default for SSR
     
@@ -470,6 +505,17 @@ const SlideShowcase = () => {
     if (width >= 768) return 5;  // md breakpoint
     if (width >= 640) return 4;  // sm breakpoint
     return 2; // default (mobile)
+=======
+  const navigate = useNavigate(); // Tambahkan ini di awal fungsi
+
+  const getSliceCount = () => {
+    if (typeof window === 'undefined') return 8; 
+    const width = window.innerWidth;
+    if (width >= 1024) return 8; 
+    if (width >= 768) return 5;  
+    if (width >= 640) return 4;  
+    return 2; 
+>>>>>>> 8850f48e5a09b0d1f89544b880aff14bec030b6d
   };
 
   const [sliceCount, setSliceCount] = React.useState(getSliceCount);
@@ -478,13 +524,17 @@ const SlideShowcase = () => {
     const handleResize = () => {
       setSliceCount(getSliceCount());
     };
+<<<<<<< HEAD
 
+=======
+>>>>>>> 8850f48e5a09b0d1f89544b880aff14bec030b6d
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   return (
     <Section id="template">
+<<<<<<< HEAD
       <div className="mb-8 text-center" data-swiper-parallax="-60">
         <h2 className="text-3xl font-bold sm:text-4xl" style={{ color: C.deep }}>
           Pameran Template
@@ -510,6 +560,41 @@ const SlideShowcase = () => {
             </div>
           </a>
         ))}
+=======
+      <div className="max-w-7xl mx-auto px-4">
+        <div className="mb-16 text-center">
+          <h2 
+            className="text-3xl font-bold sm:text-4xl"
+            style={{ color: C.deep }}
+          >
+            Pameran Template
+          </h2> 
+        </div>
+
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
+          {previews.slice(0, sliceCount).map((p) => (
+            <div
+              key={p.id}
+              // GANTI href="#" MENJADI navigate
+              onClick={() => navigate(`/tema?category=${p.category.toLowerCase()}`)}
+              className="group block w-full overflow-hidden rounded-xl border p-2 transition hover:-translate-y-0.5 cursor-pointer"
+              style={{ borderColor: `${C.deep}22`, backgroundColor: "#ffffff" }}
+            >
+              <img
+                src={p.src}
+                alt={p.title}
+                className="aspect-[9/14] rounded-lg object-cover transition duration-500 group-hover:scale-[1.04]"
+              />
+              <div 
+                className="mt-2 text-xs font-medium"
+                style={{ color: C.deep }}
+              >
+                {p.title}
+              </div>
+            </div>
+          ))}
+        </div>
+>>>>>>> 8850f48e5a09b0d1f89544b880aff14bec030b6d
       </div>
     </Section>
   );
@@ -523,12 +608,17 @@ const faqs = [
   { q: "Apakah ada musik & galeri foto?", a: "Ya, tersedia musik latar, galeri, RSVP, peta lokasi, dan ucapan tamu." },
 ];
 
+<<<<<<< HEAD
 function SlideFAQWithFooter({ active  }) {
+=======
+function SlideFAQWithFooter() {
+>>>>>>> 8850f48e5a09b0d1f89544b880aff14bec030b6d
   const [openIndex, setOpenIndex] = React.useState(-1);
 
   const toggle = (idx) => setOpenIndex((prev) => (prev === idx ? -1 : idx));
 
   return (
+<<<<<<< HEAD
     <Section id="faq">
     <div id="faq" className="h-full w-full grid grid-rows-[auto_1fr]">
       {/* Header */}
@@ -611,6 +701,87 @@ function SlideFAQWithFooter({ active  }) {
       </AnimatePresence>
     </div>
     </Section>
+=======
+    <>
+      {/* ✅ FAQ SECTION */}
+      <Section id="faq">
+        <div className="h-full w-full grid grid-rows-[auto_1fr]">
+          
+          {/* Header */}
+          <div className="px-5 md:px-8 pt-8 pb-4">
+            <h2 className="text-center text-3xl md:text-4xl font-extrabold text-indigo-900">
+              FAQ
+            </h2>
+            <p className="mt-2 text-center text-sm text-indigo-900/70">
+              Pertanyaan yang sering diajukan tentang Mikro Undangan.
+            </p>
+          </div>
+
+          {/* Content */}
+          <div className="h-full overflow-y-auto px-5 md:px-8">
+            <div className="mx-auto max-w-3xl divide-y divide-indigo-200/50 rounded-2xl bg-white/60 backdrop-blur shadow-sm ring-1 ring-indigo-100">
+              {faqs.map((item, idx) => (
+                <FAQItem
+                  key={idx}
+                  index={idx}
+                  open={openIndex === idx}
+                  onToggle={() => toggle(idx)}
+                  q={item.q}
+                  a={item.a}
+                />
+              ))}
+            </div>
+          </div>
+        </div>
+      </Section>
+
+      {/* ✅ FOOTER FULL WIDTH */}
+      <div className="w-full bg-white px-8 md:px-16 py-10">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-10 max-w-7x1">
+    
+      {/* Kiri */}
+      <div>
+        <div className="mb-3 text-lg font-semibold">Mikro Undangan</div>
+          <p className="text-sm opacity-80 leading-relaxed">
+            Solusi undangan digital website: bisa diakses lewat HP, mudah diedit,
+            lengkap fitur seperti galeri, RSVP, countdown, check-in QR, dan lainnya.
+            Bikin undangan impianmu dalam hitungan menit.
+          </p>
+
+        <div className="mt-4 flex items-center gap-2 text-xs opacity-70">
+          <ShieldCheck className="h-4 w-4" />
+            Privasi & Keamanan
+        </div>
+    </div>
+
+      {/* Tengah */}
+        <div>
+          <div className="mb-3 text-sm font-semibold">Menu</div>
+            <ul className="space-y-2 text-sm opacity-90">
+              <li><a href="/tema" className="hover:underline">Template</a></li>
+              <li><a href="/price" className="hover:underline">Harga</a></li>
+              <li><a href="/partner" className="hover:underline">Partner</a></li>
+              <li><a href="/about" className="hover:underline">About</a></li>
+            </ul>
+        </div>
+
+      {/* Kanan */}
+        <div>
+          <div className="mb-3 text-sm font-semibold">Kontak</div>
+            <ul className="space-y-2 text-sm opacity-90">
+            <li>Email: halo@mikroundangan.app</li>
+            <li>IG: @mikroundangan</li>
+            </ul>
+          </div>
+        </div>
+
+      {/* Garis + copyright */}
+        <div className="mt-10 border-t pt-6 text-xs opacity-70">
+          © {new Date().getFullYear()} Mikro Undangan. All rights reserved.
+        </div>
+      </div>
+    </>
+>>>>>>> 8850f48e5a09b0d1f89544b880aff14bec030b6d
   );
 }
 
@@ -700,6 +871,7 @@ export function MikroUndangan_A() {
       {/* Pass current slide index to navbar */}
       <LandingNav currentSlide={activeIndex} />
 
+<<<<<<< HEAD
       <Swiper
         direction="vertical"
         speed={900}
@@ -730,6 +902,14 @@ export function MikroUndangan_A() {
           <SlideFAQWithFooter active={activeIndex === FAQ_SLIDE_INDEX ? true : false} />
         </SwiperSlide>
       </Swiper>
+=======
+      <div className="w-full">
+        <SlideHero />
+        <SlideCategories />
+        <SlideShowcase />
+        <SlideFAQWithFooter active={true} />
+      </div>
+>>>>>>> 8850f48e5a09b0d1f89544b880aff14bec030b6d
     </div>
   );
 }

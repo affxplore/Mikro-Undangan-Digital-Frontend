@@ -144,12 +144,12 @@ const handleSaveEdit = async () => {
   try {
     // Kirim objek data biasa, hook akan mengurus FormData
     await putUpdate(category.id, categoryData);
-    alert("Kategori berhasil diperbarui")
+    
+    closeEditPopup();
     getList({ page: pagination.currentPage }); 
-    closeEditPopup(); 
+    alert("Kategori berhasil diperbarui.");
   } catch (error) {
-    const msg = error.response?.data?.message || "Gagal memperbarui kategori.";
-    alert(msg);
+    alert("Gagal memperbarui kategori.");
   }
 };
 

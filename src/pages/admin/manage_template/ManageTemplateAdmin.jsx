@@ -90,23 +90,16 @@ export default function ManageTemplate() {
     getList(filters); // Cukup panggil getList dengan filter saat ini
   };
 
-// --- Handler untuk menghapus satu template ---
-const handleDelete = (id, title) => {
-  // 1. Definisikan fungsinya
-  const executeDelete = () => {
-    remove(id)
-      .then(() => {
+  // --- Handler untuk menghapus satu template ---
+  const handleDelete = (id, title) => {
+    const deleteAction = () => {
+      remove(id).then(() => {
         toast.success(`Template "${title}" berhasil dihapus!`);
-        getList(filters); // Refresh daftar setelah sukses
-      })
-      .catch((err) => {
-        // Menggunakan pesan yang sudah kita format di useTemplates
-      toast.error(err.message); 
-      console.error("Delete Error Detail:", err.message);
+        getList(filters); // Refresh
+      }).catch(err => {
+        toast.error("Gagal menghapus template.");
       });
-  };
-
-  // 2. Jalankan fungsinya DI LUAR definisi fungsinya sendiri
+    };
 
     const ConfirmToast = ({ closeToast }) => (
       <div className="flex flex-col gap-2">
@@ -121,7 +114,7 @@ const handleDelete = (id, title) => {
           </button>
           <button
             onClick={() => {
-              executeDelete();
+              deleteAction();
               closeToast();
             }}
             className="px-3 py-1 text-sm rounded-md bg-red-600 text-white hover:bg-red-700"
@@ -137,7 +130,7 @@ const handleDelete = (id, title) => {
       autoClose: false,
       closeOnClick: false,
       draggable: false,
-      icon: <FaExclamationTriangle className="text-amber-500"/>,
+      icon: <FaExclamationTriangle />,
     });
   };
 

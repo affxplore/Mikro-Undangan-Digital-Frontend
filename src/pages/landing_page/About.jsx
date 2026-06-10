@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react"; // Tambahkan useState di sini
 import { useNavigate, Link } from "react-router-dom";
 import {
   Rocket,
@@ -17,6 +17,7 @@ import {
   MessageCircle
 } from "lucide-react";
 import { motion } from "framer-motion";
+import apiService from "../../api/apiService"; // Impor apiService kamu
 
 export default function AboutPage() {
   const navigate = useNavigate();
@@ -155,22 +156,52 @@ export default function AboutPage() {
               </div>
             </div>
 
-            <form className="mt-4 space-y-3" onSubmit={(e)=>{e.preventDefault(); alert('Terima kasih! Pesan Anda telah dikirim (simulasi).');}}>
+            {/* Update Form onSubmit */}
+            <form className="mt-4 space-y-3" onSubmit={handleSubmit}>
               <div>
                 <label className="text-xs text-slate-500">Nama</label>
-                <input required className="mt-1 w-full rounded-xl border border-slate-200 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-300" placeholder="Nama Anda" />
+                <input 
+                  name="nama"
+                  value={contactData.nama}
+                  onChange={handleChange}
+                  required 
+                  className="mt-1 w-full rounded-xl border border-slate-200 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-300" 
+                  placeholder="Nama Anda" 
+                />
               </div>
               <div>
                 <label className="text-xs text-slate-500">Email</label>
-                <input required type="email" className="mt-1 w-full rounded-xl border border-slate-200 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-300" placeholder="email@contoh.com" />
+                <input 
+                  name="email"
+                  type="email" 
+                  value={contactData.email}
+                  onChange={handleChange}
+                  required 
+                  className="mt-1 w-full rounded-xl border border-slate-200 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-300" 
+                  placeholder="email@contoh.com" 
+                />
               </div>
               <div>
                 <label className="text-xs text-slate-500">Pesan</label>
-                <textarea required rows={3} className="mt-1 w-full rounded-xl border border-slate-200 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-300" placeholder="Tulis pesan singkat..." />
+                <textarea 
+                  name="pesan"
+                  value={contactData.pesan}
+                  onChange={handleChange}
+                  required 
+                  rows={3} 
+                  className="mt-1 w-full rounded-xl border border-slate-200 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-300" 
+                  placeholder="Tulis pesan singkat..." 
+                />
               </div>
 
               <div className="flex items-center justify-between">
-                <button type="submit" className="rounded-2xl bg-gradient-to-r from-indigo-600 to-fuchsia-600 text-white px-4 py-2 text-sm font-semibold shadow">Kirim Pesan</button>
+                <button 
+                  type="submit" 
+                  disabled={loading}
+                  className="rounded-2xl bg-gradient-to-r from-indigo-600 to-fuchsia-600 text-white px-4 py-2 text-sm font-semibold shadow disabled:opacity-50"
+                >
+                  {loading ? "Mengirim..." : "Kirim Pesan"}
+                </button>
                 <div className="flex items-center gap-2 text-sm text-slate-600">
                   <Phone className="h-4 w-4" /> <span>+62 812-3456-7890</span>
                 </div>

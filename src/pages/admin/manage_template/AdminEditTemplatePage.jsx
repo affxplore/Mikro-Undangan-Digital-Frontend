@@ -31,106 +31,63 @@ export default function AdminEditTemplatePage() {
 
   const handleSave = async (metadata) => {
     try {
-      // 1. Gunakan FormData karena sistem kamu kemungkinan besar menangani upload file (thumbnail)
-      const formData = new FormData();
+      // Log input metadata dari modal
+      console.log('🔵 [Save Template] Input from Modal:', metadata);
 
-      // 2. Masukkan Metadata Dasar
-      formData.append('title', metadata.title);
-      formData.append('category_id', metadata.category_id);
-      formData.append('description', metadata.description || '');
-      formData.append('label', metadata.label ? metadata.label.toLowerCase() : 'free');
+      // Log template data dari editor
+      console.log('🔵 [Save Template] Current Template Data:', {
+        activeView: editor.activeView,
+        pageCount: editor.templateData?.pages?.length,
+        hasCover: editor.templateData?.cover ? true : false,
+        templateData: editor.templateData
+      });
 
-      // 3. SOLUSI POIN 4: Stringify template_data
-      // Kita kirim dengan key 'schema' agar cocok dengan kolom baru di database
-      const designJson = JSON.stringify(editor.templateData);
-      formData.append('schema', designJson);
+      // Buat payload
+      const payload = {
+        ...metadata, // title, description, category_id
+        template_data: editor.templateData,
+        label: metadata.label ? metadata.label.toLowerCase() : '', // Normalisasi label ke huruf kecil
+      };
 
-      // 4. Masukkan File (Jika ada upload thumbnail baru dari modal)
-      if (metadata.thumbnail_image instanceof File) {
-        formData.append('thumbnail_image', metadata.thumbnail_image);
-      }
-      if (metadata.thumbnail_file instanceof File) {
-        formData.append('thumbnail_file', metadata.thumbnail_file);
-      }
+      // Log final payload
+      console.log('🟢 [Save Template] Final Payload:', {
+        mode: editor.isCreatingNew ? 'CREATE' : 'UPDATE',
+        templateId: editor.templateId,
+        metadata: {
+          title: payload.title,
+          category_id: payload.category_id,
+          label: payload.label,
+          description: payload.description
+        },
+        templateDataStructure: {
+          hasCover: !!payload.template_data?.cover,
+          pageCount: payload.template_data?.pages?.length,
+          elementCount: payload.template_data?.pages?.reduce((sum, page) => sum + (page.elements?.length || 0), 0)
+        }
+      });
 
-      // 5. Eksekusi Save/Update
+      // Save ke backend
       if (editor.isCreatingNew) {
-        console.log('🟡 Creating new template with schema...');
-        await editor.createTemplate(formData); // Pastikan hook kamu mendukung FormData
+        console.log('🟡 [Save Template] Creating new template...');
+        await editor.createTemplate(payload);
+        console.log('🟢 [Save Template] Template created successfully!');
         alert("Template baru berhasil dibuat!");
       } else {
-        console.log('🟡 Updating template schema...', editor.templateId);
-        // Kirim formData, bukan objek payload biasa
-        await editor.updateTemplate(editor.templateId, formData);
+        console.log('🟡 [Save Template] Updating template...', editor.templateId);
+        await editor.updateTemplate(editor.templateId, payload);
+        console.log('🟢 [Save Template] Template updated successfully!');
         alert("Template berhasil diperbarui!");
       }
 
       setIsSaveModalOpen(false);
     } catch (err) {
-      console.error('🔴 [Save Template] Error:', err);
-      alert("Gagal menyimpan desain template.");
+      console.error('🔴 [Save Template] Error:', {
+        message: err.message,
+        error: err
+      });
+      alert("Gagal menyimpan template.");
     }
   };
-
-  // const handleSave = async (metadata) => {
-  //   try {
-  //     // Log input metadata dari modal
-  //     console.log('🔵 [Save Template] Input from Modal:', metadata);
-
-  //     // Log template data dari editor
-  //     console.log('🔵 [Save Template] Current Template Data:', {
-  //       activeView: editor.activeView,
-  //       pageCount: editor.templateData?.pages?.length,
-  //       hasCover: editor.templateData?.cover ? true : false,
-  //       templateData: editor.templateData
-  //     });
-
-  //     // Buat payload
-  //     const payload = {
-  //       ...metadata, // title, description, category_id
-  //       template_data: editor.templateData,
-  //       label: metadata.label ? metadata.label.toLowerCase() : '', // Normalisasi label ke huruf kecil
-  //     };
-
-  //     // Log final payload
-  //     console.log('🟢 [Save Template] Final Payload:', {
-  //       mode: editor.isCreatingNew ? 'CREATE' : 'UPDATE',
-  //       templateId: editor.templateId,
-  //       metadata: {
-  //         title: payload.title,
-  //         category_id: payload.category_id,
-  //         label: payload.label,
-  //         description: payload.description
-  //       },
-  //       templateDataStructure: {
-  //         hasCover: !!payload.template_data?.cover,
-  //         pageCount: payload.template_data?.pages?.length,
-  //         elementCount: payload.template_data?.pages?.reduce((sum, page) => sum + (page.elements?.length || 0), 0)
-  //       }
-  //     });
-
-  //     // Save ke backend
-  //     if (editor.isCreatingNew) {
-  //       console.log('🟡 [Save Template] Creating new template...');
-  //       await editor.createTemplate(payload);
-  //       console.log('🟢 [Save Template] Template created successfully!');
-  //       alert("Template baru berhasil dibuat!");
-  //     } else {
-  //       console.log('🟡 [Save Template] Updating template...', editor.templateId);
-  //       await editor.updateTemplate(editor.templateId, payload);
-  //       console.log('🟢 [Save Template] Template updated successfully!');
-  //       alert("Template berhasil diperbarui!");
-  //     }
-
-  //     setIsSaveModalOpen(false);
-  //   } catch (err) {
-  //     console.error('🔴 [Save Template] Error:', {
-  //       message: err.message,
-  //       error: err
-  //     });
-  //     alert("Gagal menyimpan template.");
-  //   }
-  // };
 
   const downloadDataUrl = (url, name) => {
     const a = document.createElement('a');

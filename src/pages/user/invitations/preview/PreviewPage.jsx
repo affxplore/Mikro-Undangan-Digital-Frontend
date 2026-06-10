@@ -1,6 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate, useSearchParams } from "react-router-dom";
+<<<<<<< HEAD
 import useInvitations from "../../../../api/invitations/useInvitations.jsx";
+=======
+>>>>>>> 8850f48e5a09b0d1f89544b880aff14bec030b6d
 import useProjects from "../../../../api/projects/useProjects";
 import { ALL_REGISTRY, CANVAS } from "../../../../utils/InvitationBuilder";
  import { FaDesktop, FaMobileAlt, FaTimes, FaQrcode, FaPlay, FaPause, FaArrowDown, FaArrowLeft } from "react-icons/fa";
@@ -113,7 +116,10 @@ export const PreviewCard = ({ page, guestName, showBranding = false }) => {
 // Komponen Halaman Preview Utama
 export default function PreviewPage() {
   const { projectId } = useParams();
+<<<<<<< HEAD
   const { getPublicById } = useInvitations();
+=======
+>>>>>>> 8850f48e5a09b0d1f89544b880aff14bec030b6d
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const { getById: getProject, loading, error } = useProjects();
@@ -148,6 +154,7 @@ export default function PreviewPage() {
       // Fallback: Jika tidak ada data di sessionStorage, fetch dari API
       if (projectId) {
         try {
+<<<<<<< HEAD
           // const project = await getProject(projectId);
           const invitation = await getPublicById(projectId);
 
@@ -155,13 +162,21 @@ export default function PreviewPage() {
           
           setProjectData(
             invitation?.project_data || invitation);
+=======
+          const project = await getProject(projectId);
+          setProjectData(project.project_data);
+>>>>>>> 8850f48e5a09b0d1f89544b880aff14bec030b6d
         } catch (err) {
           console.error("Gagal memuat data project untuk preview:", err);
         }
       }
     };
     loadData();
+<<<<<<< HEAD
   }, [projectId, getPublicById]);
+=======
+  }, [projectId, getProject]);
+>>>>>>> 8850f48e5a09b0d1f89544b880aff14bec030b6d
 
   // Cleanup interval saat komponen unmount
   useEffect(() => {

@@ -1,4 +1,5 @@
 // src/api/subscription/SubscriptionModel.jsx
+<<<<<<< HEAD
 // import React, { useState, useEffect } from 'react';
 
 // export function fromBackend(s) {
@@ -137,10 +138,15 @@
 
 export function fromBackend(s) {
   if (!s) return null;
+=======
+
+export function fromBackend(s) {
+>>>>>>> 8850f48e5a09b0d1f89544b880aff14bec030b6d
   return {
     id: s.id,
     slug: s.slug,
     name: s.name,
+<<<<<<< HEAD
     description: s.description || '',
     invitation_limit: s.invitation_limit || 0,
     allow_branding_removal: Boolean(s.allow_branding_removal),
@@ -149,6 +155,16 @@ export function fromBackend(s) {
       amount: p.amount,
       // Jika interval adalah objek dari backend, ambil properti interval-nya
       interval: typeof p.interval === 'object' ? p.interval.interval : p.interval,
+=======
+    description: s.description,
+    invitation_limit: s.invitation_limit,
+    allow_branding_removal: s.allow_branding_removal,
+    // Ubah array 'prices' menjadi format yang lebih rapi
+    prices: Array.isArray(s.prices) ? s.prices.map(p => ({
+      id: p.id,
+      amount: p.amount,
+      interval: p.interval,
+>>>>>>> 8850f48e5a09b0d1f89544b880aff14bec030b6d
     })) : [],
     createdAt: s.createdAt,
     updatedAt: s.updatedAt,
@@ -156,30 +172,58 @@ export function fromBackend(s) {
 }
 
 export function toBackend(s) {
+<<<<<<< HEAD
   // 1. Validasi Dasar
   if (!s.slug?.trim()) throw new Error('Slug tidak boleh kosong');
   if (!s.name?.trim()) throw new Error('Nama paket tidak boleh kosong');
+=======
+  // Validasi data dasar
+  if (!s.slug || typeof s.slug !== 'string' || s.slug.trim() === '') {
+    throw new Error('Slug tidak boleh kosong');
+  }
+  
+  if (!s.name || typeof s.name !== 'string' || s.name.trim() === '') {
+    throw new Error('Nama paket tidak boleh kosong');
+  }
+  
+  if (!s.description || typeof s.description !== 'string' || s.description.trim() === '') {
+    throw new Error('Deskripsi tidak boleh kosong');
+  }
+>>>>>>> 8850f48e5a09b0d1f89544b880aff14bec030b6d
   
   const invitationLimit = parseInt(s.invitation_limit, 10);
   if (isNaN(invitationLimit) || invitationLimit < 1) {
     throw new Error('Batas undangan harus berupa angka positif');
   }
 
+<<<<<<< HEAD
   // 2. Siapkan Payload Dasar
   const payload = {
     slug: s.slug.trim(),
     name: s.name.trim(),
     description: s.description?.trim() || '',
+=======
+  // Payload untuk membuat atau mengupdate subscription
+  const payload = {
+    slug: s.slug.trim(),
+    name: s.name.trim(),
+    description: s.description.trim(),
+>>>>>>> 8850f48e5a09b0d1f89544b880aff14bec030b6d
     invitation_limit: invitationLimit,
     allow_branding_removal: Boolean(s.allow_branding_removal),
   };
 
+<<<<<<< HEAD
   // 3. Tambahkan prices jika ada (Logika masuk ke dalam fungsi)
+=======
+  // Tambahkan prices jika ada
+>>>>>>> 8850f48e5a09b0d1f89544b880aff14bec030b6d
   if (s.prices && Array.isArray(s.prices)) {
     const validPrices = [];
     
     for (const price of s.prices) {
       const amount = parseFloat(price.amount);
+<<<<<<< HEAD
       let rawInterval = price.interval;
 
       // Proteksi jika interval berupa objek
@@ -203,11 +247,31 @@ export function toBackend(s) {
       validPrices.push({
         amount: amount,
         interval: interval
+=======
+      
+      if (isNaN(amount) || amount <= 0) {
+        throw new Error('Semua harga harus berupa angka positif');
+      }
+      
+      if (!['month', 'year'].includes(price.interval)) {
+        throw new Error('Interval harga harus "month" atau "year"');
+      }
+      
+      validPrices.push({
+        amount: amount,
+        interval: price.interval
+>>>>>>> 8850f48e5a09b0d1f89544b880aff14bec030b6d
       });
     }
     
     payload.prices = validPrices;
   }
+<<<<<<< HEAD
 
   return payload; // Mengembalikan objek data ke pemanggil
+=======
+  
+  console.log('Subscription payload to backend:', payload);
+  return payload;
+>>>>>>> 8850f48e5a09b0d1f89544b880aff14bec030b6d
 }

@@ -17,11 +17,15 @@ const apiTemp = {
   },
   create: (payload) => {
     console.log("🌐 [apiTemp] POST /templates with payload:", payload);
+<<<<<<< HEAD
     return apiService.post(API_URL, payload, {
       headers: {
         // penting: kosongkan Content-Type agar otomatis multipart
       },
     });
+=======
+    return apiService.post(API_URL, payload);
+>>>>>>> 8850f48e5a09b0d1f89544b880aff14bec030b6d
   },
   update: (id, payload) => {
     console.log("🌐 [apiTemp] PUT /templates/" + id + " with payload:", payload);
@@ -75,9 +79,39 @@ export default function useTemplates() {
         }
 
         console.log("🚀 [useTemplates] Mengirim parameter ke API:", queryParams);
+<<<<<<< HEAD
         
         const res = await apiTemp.getList(queryParams);
         console.log("📡 [useTemplates] Raw API Response status:", res.status);
+=======
+        console.log("🚀 [useTemplates] Filter object:", filter);
+        console.log("🚀 [useTemplates] Sort parameter:", params.sort);
+        
+        // 🧪 DEBUGGING: Test basic request tanpa filter/sort terlebih dahulu
+        let testParams = { page: queryParams.page, limit: queryParams.limit };
+        console.log("🧪 [useTemplates] Testing basic request first:", testParams);
+        
+        try {
+          const basicTest = await apiTemp.getList(testParams);
+          console.log("✅ [useTemplates] Basic request SUCCESS:", basicTest.status);
+          console.log("✅ [useTemplates] Basic response:", basicTest.data);
+        } catch (basicError) {
+          console.error("❌ [useTemplates] Basic request FAILED:", basicError);
+          console.error("❌ [useTemplates] Basic error details:", {
+            status: basicError.response?.status,
+            message: basicError.message,
+            data: basicError.response?.data
+          });
+          throw basicError; // Stop here if basic request fails
+        }
+        
+        // If basic works, try with current params
+        console.log("🧪 [useTemplates] Basic request worked, now testing with full params:", queryParams);
+        const res = await apiTemp.getList(queryParams);
+        console.log("📡 [useTemplates] Raw API Response:", res);
+        console.log("📡 [useTemplates] Response Status:", res.status);
+        console.log("📡 [useTemplates] Response Data Structure:", res.data);
+>>>>>>> 8850f48e5a09b0d1f89544b880aff14bec030b6d
 
         // Cek apakah response valid
         if (!res.data) {
@@ -175,10 +209,15 @@ export default function useTemplates() {
       console.log("🔍 [useTemplates] GetById mapped result:", result);
       return result; // Kembalikan data yang sudah di-map
     } catch (err) {
+<<<<<<< HEAD
       const errorMessage = err.response?.data?.message || "Gagal menghapus template";
       console.error("❌ [useTemplates] Error in getById:", errorMessage);
       setError(errorMessage);
       err.displayMessage = errorMessage;
+=======
+      console.error("❌ [useTemplates] Error in getById:", err);
+      setError(err);
+>>>>>>> 8850f48e5a09b0d1f89544b880aff14bec030b6d
       throw err;
     } finally {
       setLoading(false);
@@ -235,6 +274,7 @@ const create = useCallback(async (templateData) => {
   }, []);
 
   // Fungsi untuk menghapus data
+<<<<<<< HEAD
   const remove = useCallback(async (id) => {
   console.log("🗑️ [useTemplates] Removing template ID:", id);
   setLoading(true);
@@ -263,6 +303,23 @@ const create = useCallback(async (templateData) => {
     setLoading(false);
   }
 }, [getList]);
+=======
+   const remove = useCallback(async (id) => {
+    console.log("🗑️ [useTemplates] Removing template ID:", id);
+    setLoading(true);
+    setError(null);
+    try {
+      const res = await apiTemp.remove(id); // <-- Gunakan nama yang konsisten
+      console.log("🗑️ [useTemplates] Remove response:", res);
+    } catch (err) {
+      console.error("❌ [useTemplates] Error deleting template:", err);
+      setError(err);
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+>>>>>>> 8850f48e5a09b0d1f89544b880aff14bec030b6d
 
   return {
     data,

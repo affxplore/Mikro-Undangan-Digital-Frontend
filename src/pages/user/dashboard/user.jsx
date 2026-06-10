@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // import React, { useState, useMemo, useEffect } from "react";
 // import {
 //   LineChart,
@@ -788,6 +789,10 @@
 // }
 
 import React, { useState, useMemo, useEffect } from "react";
+=======
+import React, { useState, useMemo, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+>>>>>>> 8850f48e5a09b0d1f89544b880aff14bec030b6d
 import {
   Line,
   Bar,
@@ -813,6 +818,10 @@ import { formatTimeAgo } from "../../../utils/Time";
 import NotificationItem from "../../../components/notification/NotificationItem";
 
 export default function DashboardUser() {
+<<<<<<< HEAD
+=======
+  const navigate = useNavigate();
+>>>>>>> 8850f48e5a09b0d1f89544b880aff14bec030b6d
   const { userStats, fetchUserStats } = useDashboard();
   const {
     data: notifications,
@@ -1035,10 +1044,23 @@ export default function DashboardUser() {
             <h4 className="text-sm font-medium">Quick Action</h4>
             <div className="mt-3 grid gap-2">
               <button
+<<<<<<< HEAD
                 onClick={() => setShowCreateModal(true)}
                 className="w-full py-2 px-3 rounded-lg bg-blue-600 text-white flex items-center justify-center gap-2"
               >
                 <Plus /> Buat Undangan
+=======
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation(); // Mencegah event "naik" ke elemen induk
+                  console.log("Tombol diklik, mencoba navigasi..."); 
+                  navigate("/dashboard/templates");
+                }}
+                className="w-full py-2 px-3 rounded-lg bg-blue-600 text-white flex items-center justify-center gap-2 transition-all hover:bg-blue-700 active:scale-95 cursor-pointer shadow-sm"
+              >
+                <Plus size={18} />
+                <span className="font-medium">Buat Undangan</span>
+>>>>>>> 8850f48e5a09b0d1f89544b880aff14bec030b6d
               </button>
             </div>
           </div>
@@ -1113,3 +1135,7 @@ export default function DashboardUser() {
     </div>
   );
 }
+<<<<<<< HEAD
+=======
+
+>>>>>>> 8850f48e5a09b0d1f89544b880aff14bec030b6d

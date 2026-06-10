@@ -1,5 +1,9 @@
 import React, { useState } from 'react';
+<<<<<<< HEAD
 import { Link, useNavigate } from 'react-router-dom';
+=======
+import { Link, useNavigate, useLocation } from 'react-router-dom'; // Digabung jadi satu baris
+>>>>>>> 8850f48e5a09b0d1f89544b880aff14bec030b6d
 import { Loader } from 'lucide-react';
 import { useAuth } from '../../api/auth/useAuth';
 
@@ -7,17 +11,33 @@ const LoginPage = () => {
   const [form, setForm] = useState({ email: '', password: '' });
   const { login } = useAuth();
   const navigate = useNavigate();
+<<<<<<< HEAD
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
+=======
+  const location = useLocation(); // Tambahkan ini agar variabel 'from' tidak error
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+
+  // Tentukan arah redirect setelah login sukses
+  const from = location.state?.from?.pathname || "/dashboard"; 
+
+>>>>>>> 8850f48e5a09b0d1f89544b880aff14bec030b6d
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
   const handleGoogleLogin = () => {
+<<<<<<< HEAD
         // Arahkan ke endpoint backend yang akan me-redirect ke Google
         window.location.href = 'http://localhost:2222/api/v1/auth/google';
     };
+=======
+    // Arahkan ke endpoint backend yang akan me-redirect ke Google
+    window.location.href = 'http://localhost:2222/api/v1/auth/google';
+  };
+>>>>>>> 8850f48e5a09b0d1f89544b880aff14bec030b6d
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -25,6 +45,11 @@ const LoginPage = () => {
     setError('');
     try {
       await login(form);
+<<<<<<< HEAD
+=======
+      // Redirect ke tujuan sebelumnya atau dashboard
+      navigate(from, { replace: true });
+>>>>>>> 8850f48e5a09b0d1f89544b880aff14bec030b6d
     } catch (err) {
       if (err.response?.data?.code === 'ACCOUNT_PENDING') {
         setError("Akun belum aktif. Silakan verifikasi terlebih dahulu.");
@@ -42,9 +67,13 @@ const LoginPage = () => {
       className="min-h-screen flex items-center justify-center bg-cover bg-center"
       style={{ backgroundImage: "url('/pict/BG-v1.jpg')" }}
     >
+<<<<<<< HEAD
       {/* Card Login */}
       <div className="bg-white/90 backdrop-blur-sm p-8 rounded-2xl shadow-xl w-full max-w-md text-gray-800">
         
+=======
+      <div className="bg-white/90 backdrop-blur-sm p-8 rounded-2xl shadow-xl w-full max-w-md text-gray-800">
+>>>>>>> 8850f48e5a09b0d1f89544b880aff14bec030b6d
         <h2 className="text-2xl font-bold text-center mb-2">Login</h2>
         <p className="text-center text-gray-500 mb-6">
           Please enter your Login and your Password
@@ -53,7 +82,10 @@ const LoginPage = () => {
         {error && <p className="text-red-500 text-center mb-4">{error}</p>}
 
         <form onSubmit={handleSubmit}>
+<<<<<<< HEAD
           {/* Email */}
+=======
+>>>>>>> 8850f48e5a09b0d1f89544b880aff14bec030b6d
           <div className="mb-4">
             <input
               type="email"
@@ -66,7 +98,10 @@ const LoginPage = () => {
             />
           </div>
 
+<<<<<<< HEAD
           {/* Password */}
+=======
+>>>>>>> 8850f48e5a09b0d1f89544b880aff14bec030b6d
           <div className="mb-2">
             <input
               type="password"
@@ -79,14 +114,22 @@ const LoginPage = () => {
             />
           </div>
 
+<<<<<<< HEAD
           {/* Forgot password */}
           <div className="flex justify-end mb-6">
             <Link to="/forgot-password" className="text-sm text-blue-500 hover:underline">
+=======
+          <div className="flex justify-end mb-6">
+            <Link to="/forgot-password" university className="text-sm text-blue-500 hover:underline">
+>>>>>>> 8850f48e5a09b0d1f89544b880aff14bec030b6d
               Forgot password?
             </Link>
           </div>
 
+<<<<<<< HEAD
           {/* Submit */}
+=======
+>>>>>>> 8850f48e5a09b0d1f89544b880aff14bec030b6d
           <button
             type="submit"
             disabled={loading}
@@ -102,8 +145,12 @@ const LoginPage = () => {
           <div className="flex-grow border-t border-gray-300"></div>
         </div>
 
+<<<<<<< HEAD
         {/* Or sign in with Google */}
         <div className="">
+=======
+        <div>
+>>>>>>> 8850f48e5a09b0d1f89544b880aff14bec030b6d
           <button
             type="button"
             onClick={handleGoogleLogin}
@@ -118,7 +165,10 @@ const LoginPage = () => {
           </button>
         </div>
 
+<<<<<<< HEAD
         {/* Register */}
+=======
+>>>>>>> 8850f48e5a09b0d1f89544b880aff14bec030b6d
         <p className="mt-6 text-center text-gray-600">
           Not a member yet?{' '}
           <Link to="/regis" className="text-blue-500 font-semibold hover:underline">
@@ -130,6 +180,7 @@ const LoginPage = () => {
   );
 };
 
+<<<<<<< HEAD
 export default LoginPage;
 
 
@@ -276,3 +327,6 @@ export default LoginPage;
 // };
 
 // export default LoginPage; */}
+=======
+export default LoginPage;
+>>>>>>> 8850f48e5a09b0d1f89544b880aff14bec030b6d

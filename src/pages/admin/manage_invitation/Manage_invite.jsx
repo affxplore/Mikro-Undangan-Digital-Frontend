@@ -253,8 +253,7 @@ const ManageInvite = () => {
 
   // merge data when all ready
   useEffect(() => {
-    if (invitations && projects && templates) {
-    // if (invitations?.length && projects?.length && templates?.length) {
+    if (invitations?.length && projects?.length && templates?.length) {
       const mapped = invitations.map((inv) => {
         const project = projects.find((p) => p.id === inv.project_id);
         const template = templates.find((t) => t.id === project?.template_id);
@@ -315,7 +314,6 @@ const ManageInvite = () => {
       </div>
 
       {/* Table */}
-
       <div className="overflow-x-auto rounded-xl shadow-sm border border-gray-200">
         {loading ? (
           <p className="p-6 text-center text-gray-500">Loading...</p>

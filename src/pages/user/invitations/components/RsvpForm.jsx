@@ -48,6 +48,7 @@ export default function RsvpForm({ invitationId, guestCode }) {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+<<<<<<< HEAD
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!formData.guest_name) {
@@ -67,6 +68,30 @@ export default function RsvpForm({ invitationId, guestCode }) {
       toast.error("Gagal mengirim ucapan.");
     }
   };
+=======
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  
+  try {
+    const payload = {
+      invitation_id: Number(invitationId), // Pastikan ini angka
+      guest_name: formData.guest_name,
+      notes: formData.notes,
+      attendance_status: formData.attendance_status.toLowerCase(), // Paksa jadi huruf kecil
+    };
+
+    console.log("Payload Final:", payload);
+
+    await createUcapan(payload);
+    setIsSubmitted(true);
+    toast.success("Ucapan terkirim!");
+  } catch (err) {
+    // Trik sakti: Lihat pesan error asli dari database di console
+    console.error("Pesan Error Backend:", err.response?.data);
+    toast.error(err.response?.data?.message || "Gagal mengirim ucapan.");
+  }
+};
+>>>>>>> 8850f48e5a09b0d1f89544b880aff14bec030b6d
 
   if (isSubmitted) {
     return (

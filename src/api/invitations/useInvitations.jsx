@@ -32,7 +32,10 @@ export default function useInvitations() {
         limit: params.limit || 10,
         filter: JSON.stringify({
           search: params.search || undefined,
+<<<<<<< HEAD
           status: params.filterStatus || undefined,
+=======
+>>>>>>> 8850f48e5a09b0d1f89544b880aff14bec030b6d
           category_id: params.category_id || undefined, // <-- Tambahkan filter kategori
         }),
       };

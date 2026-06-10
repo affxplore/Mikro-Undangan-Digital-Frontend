@@ -77,7 +77,7 @@ export default function Sidebar({ isVisible }) {
     item.roles.includes(userRole)
   );
 
-  const appName = import.meta.env.VITE_APP_NAME || "Nama Aplikasi"; 
+  const appName = import.meta.env.VITE_APP_NAME || "Mikro Undangan"; 
   return (
     <div
       className={`fixed inset-y-0 left-0 overflow-y-auto ${
@@ -85,10 +85,9 @@ export default function Sidebar({ isVisible }) {
       } bg-white border-r flex flex-col transition-all duration-300`}
     >
       <div className="flex items-center px-4 py-4">
-               <img
-          src={logoUrl || null} // Gunakan state dinamis
+              <img
+          src={logoUrl} // Gunakan state dinamis
           alt="Logo"
-          onError={(e) => e.target.style.display = 'none'}
           className={`h-10 w-10 mr-2 ${!isVisible && "mx-auto"}`}
         />
 

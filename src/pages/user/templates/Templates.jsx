@@ -5,7 +5,11 @@ import useCategories from "../../../api/categories/useCategories";
 import ModalForm from "./components/ModalForm";
 import useInvitations from "../../../api/invitations/useInvitations";
 import PreviewTemplateModal from "./PreviewTemplateModal";
+<<<<<<< HEAD
 import { useNavigate } from "react-router-dom";
+=======
+import { useNavigate, useSearchParams } from "react-router-dom";
+>>>>>>> 8850f48e5a09b0d1f89544b880aff14bec030b6d
 import { useAuth } from "../../../api/auth/useAuth";
 import { FaStar, FaCheckCircle } from "react-icons/fa";
 
@@ -37,6 +41,11 @@ const initialFormData = {
 };
 
 export default function TemplatesPage() {
+<<<<<<< HEAD
+=======
+  const [searchParams] = useSearchParams();
+  const categoryNameFromUrl = searchParams.get('category');
+>>>>>>> 8850f48e5a09b0d1f89544b880aff14bec030b6d
   const [filters, setFilters] = useState({
     page: 1,
     limit: 9,
@@ -87,6 +96,26 @@ export default function TemplatesPage() {
     getCategories({ limit: 999 });
   }, [getCategories]);
 
+<<<<<<< HEAD
+=======
+  useEffect(() => {
+    if (categoryNameFromUrl && categories.length > 0) {
+    // Cari kategori yang namanya cocok (case insensitive)
+    const matchedCategory = categories.find(
+      (c) => c.name.toLowerCase() === categoryNameFromUrl.toLowerCase()
+    );
+
+    if (matchedCategory) {
+      setFilters((prev) => ({
+        ...prev,
+        category_id: matchedCategory.id,
+        page: 1,
+      }));
+    }
+  }
+}, [categoryNameFromUrl, categories]);
+
+>>>>>>> 8850f48e5a09b0d1f89544b880aff14bec030b6d
   const handleFilterChange = (e) => {
     const { name, value } = e.target;
     setFilters((prev) => ({

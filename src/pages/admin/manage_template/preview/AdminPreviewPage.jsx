@@ -14,7 +14,7 @@ export const AdminPreviewCard = ({ page }) => {
     if (card.bgType === "image" && card.bgImage) {
       return (
         <img
-          src={card.bgImage || null} 
+          src={card.bgImage}
           alt="bg"
           className="absolute inset-0 h-full w-full object-cover"
         />
@@ -159,14 +159,11 @@ export default function AdminPreviewPage({ templateData, onClose }) {
 
       {/* Kontainer Template */}
       <div className={`transition-all duration-300 py-8 ${
-        viewMode === "mobile" 
-        ? "origin-top scale-[0.8] sm:scale-100"
-        :"w-full"
+        viewMode === "mobile" ? "w-[412px] mx-auto" : "w-full"
       }`}>
         <div className="flex flex-col items-center gap-8">
           {templateData.pages.map((page, index) => (
-            <div id={`page${index}`} key={page.id || index}>
-              style={{ scrollMarginTop: '80px' }} // Agar tidak tertutup Top Bar
+            <div id={`page-${index}`} key={page.id || index}>
               <AdminPreviewCard page={page} />
             </div>
           ))}

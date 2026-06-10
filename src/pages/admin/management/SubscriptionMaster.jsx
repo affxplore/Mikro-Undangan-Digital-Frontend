@@ -270,11 +270,21 @@ export default function SubscriptionPage() {
   // Hapus useEffect yang otomatis memilih item pertama
   // Biarkan user memilih sendiri paket yang ingin diedit
 
-const handleSave = async (subData, priceData) => {
+  const handleSave = async (subData, priceData) => {
     try {
-      // 1. Validasi Input Dasar
-      if (!subData.slug?.trim() || !subData.name?.trim() || !subData.description?.trim()) {
-        toast.error("Semua field wajib diisi");
+      // Validasi data dasar subscription
+      if (!subData.slug || !subData.slug.trim()) {
+        toast.error("Slug tidak boleh kosong");
+        return;
+      }
+
+      if (!subData.name || !subData.name.trim()) {
+        toast.error("Nama paket tidak boleh kosong");
+        return;
+      }
+
+      if (!subData.description || !subData.description.trim()) {
+        toast.error("Deskripsi tidak boleh kosong");
         return;
       }
 

@@ -61,7 +61,7 @@ const AddCategory = () => {
             <label className="block font-medium mb-1">Icon Image</label>
             <input
               type="file"
-              accept="image/*"
+              accept=".png, .jpg, .jpeg, .svg, .webp, .image/png, .image/jpeg, .image/svg+xml, image/webp*"
               name="icon_img"
               onChange={handleFileChange}
               className="hidden"

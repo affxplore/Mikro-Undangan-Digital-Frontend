@@ -90,7 +90,11 @@ export default function AffiliateManagePage() {
       <div className=" top-0 z-20 backdrop-blur supports-[backdrop-filter]:bg-white/70 bg-white/90 border-b border-slate-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
+<<<<<<< HEAD
+            <div className="h-9 w-9 rounded-2xl bg-blue-600 bg-gradient-to-br from-blue-600 to-blue-500 shadow-md flex items-center justify-center">
+=======
             <div className="h-9 w-9 rounded-2xl bg-blue-600 bg-gradien-to-br from-blue-600 to-blue-500 shadow-md flex items-center justify-center">
+>>>>>>> 8850f48e5a09b0d1f89544b880aff14bec030b6d
               <LinkIcon className="h-5 w-5 text-white" />
             </div>
             <div>
@@ -149,7 +153,11 @@ export default function AffiliateManagePage() {
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4 }}
+<<<<<<< HEAD
+            className="lg:col-span-2 rounded-3xl border border-slate-100 bg-gradient-to-b from-white to-slate-50 shadow-sm"
+=======
             className="lg:col-span-2 rounded-3xl border border-slate-100 bg-gradien-to-b from-white to-slate-50 shadow-sm"
+>>>>>>> 8850f48e5a09b0d1f89544b880aff14bec030b6d
           >
             <div className="p-6 border-b border-slate-100">
               <div className="flex items-center gap-2">
@@ -199,7 +207,11 @@ export default function AffiliateManagePage() {
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, delay: 0.05 }}
+<<<<<<< HEAD
+            className="rounded-3xl border border-slate-100 bg-gradient-to-b from-white to-slate-50 shadow-sm"
+=======
             className="rounded-3xl border border-slate-100 bg-gradien-to-b from-white to-slate-50 shadow-sm"
+>>>>>>> 8850f48e5a09b0d1f89544b880aff14bec030b6d
           >
             <div className="p-6 border-b border-slate-100">
               <div className="flex items-center gap-2">
@@ -330,7 +342,11 @@ export default function AffiliateManagePage() {
 
         {/* Guide */}
         <section className="grid grid-cols-1 xl:grid-cols-3 gap-6">
+<<<<<<< HEAD
+          <div className="xl:col-span-2 rounded-3xl border border-slate-100 bg-gradient-to-b from-white to-slate-50 shadow-sm">
+=======
           <div className="xl:col-span-2 rounded-3xl border border-slate-100 bg-gradien-to-b from-white to-slate-50 shadow-sm">
+>>>>>>> 8850f48e5a09b0d1f89544b880aff14bec030b6d
             <div className="p-6 border-b border-slate-100 flex items-center gap-2">
               <Info className="h-5 w-5 text-blue-600" />
               <h2 className="font-semibold text-slate-800">Panduan Singkat Program</h2>
@@ -393,7 +409,11 @@ function StatCard({ title, value, icon: Icon, accent = "from-blue-600 to-blue-50
           <p className="text-sm text-slate-500">{title}</p>
           <p className="mt-1 text-2xl font-semibold text-slate-900">{value}</p>
         </div>
+<<<<<<< HEAD
+        <div className={cx("h-12 w-12 rounded-2xl shadow-inner text-white flex items-center justify-center bg-gradient-to-br", accent)}>
+=======
         <div className={cx("h-12 w-12 rounded-2xl shadow-inner text-white flex items-center justify-center bg-gradien-to-br", accent)}>
+>>>>>>> 8850f48e5a09b0d1f89544b880aff14bec030b6d
           <Icon className="h-6 w-6" />
         </div>
       </div>

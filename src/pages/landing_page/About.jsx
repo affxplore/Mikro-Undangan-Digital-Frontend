@@ -22,63 +22,6 @@ import apiService from "../../api/apiService"; // Impor apiService kamu
 export default function AboutPage() {
   const navigate = useNavigate();
 
-  // --- LOGIKA FORM HUBUNGI KAMI ---
-  const [loading, setLoading] = useState(false);
-  const [contactData, setContactData] = useState({
-    nama: '',
-    email: '',
-    pesan: ''
-  });
-
-  const handleCreate = () => {
-    const token = localStorage.getItem("token");
-
-    if (!token) {
-      // Jika belum login, arahkan ke login
-      // 'from' dibungkus dalam object agar terbaca oleh login.jsx
-      navigate("/login", {
-        state: { from: { pathname: "/dashboard/invitations" } }
-      });
-    } else {
-      // Jika sudah login, langsung ke halaman invitations
-      navigate("/dashboard/invitations");
-    }
-  };
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setContactData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
-
-const handleSubmit = async (e) => {
-  e.preventDefault();
-  setLoading(true);
-  try {
-    // Kirim sebagai Object JSON biasa agar terbaca oleh req.body di backend
-    const payload = {
-      name: contactData.nama,
-      email: contactData.email,
-      message: contactData.pesan,
-      type: 'info'
-    };
-
-    await apiService.post("/system-messages", payload); 
-    
-    alert("Pesan berhasil dikirim!");
-    setContactData({ nama: '', email: '', pesan: '' });
-  } catch (error) {
-    console.error(error.response || error);
-    alert("Gagal mengirim pesan.");
-  } finally {
-    setLoading(false);
-  }
-};
-
-  // -------------------------------
-
   return (
     <div className="min-h-screen bg-gradient-to-b from-indigo-50 via-white to-fuchsia-50 text-slate-900">
       {/* Hero */}
@@ -196,7 +139,7 @@ const handleSubmit = async (e) => {
             </div>
           </div>
 
-          {/* Contact Us box - INTEGRASI ASLI */}
+          {/* Contact Us box */}
           <motion.aside
             initial={{ opacity: 0, x: 20 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -287,15 +230,18 @@ const handleSubmit = async (e) => {
             </div>
             <div className="flex gap-3">
               <button
-                onClick={handleCreate}
+                onClick={() => navigate("/create")}
                 className="rounded-2xl bg-white text-slate-900 px-5 py-3 text-sm font-semibold shadow-sm hover:bg-slate-100"
               >
                 Buat Undangan
               </button>
+              
             </div>
           </div>
         </div>
       </section>
+
+      
     </div>
   );
 }

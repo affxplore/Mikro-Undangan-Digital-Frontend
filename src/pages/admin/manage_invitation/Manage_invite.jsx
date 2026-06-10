@@ -193,10 +193,12 @@
 
 
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom"
 import { FiEdit, FiTrash2, FiEye } from "react-icons/fi";
 import useInvitations from "../../../api/invitations/useInvitations";
 import useProjects from "../../../api/projects/useProjects";
 import useTemplates from "../../../api/templates/useTemplates";
+import { toast } from "react-toastify";
 
 const ManageInvite = () => {
   const {
@@ -215,6 +217,27 @@ const ManageInvite = () => {
   const [search, setSearch] = useState("");
   const [filterStatus, setFilterStatus] = useState("");
   const [mergedData, setMergedData] = useState([]);
+
+  const navigate = useNavigate();
+  const handleEdit = (inv) => {
+    // Coba ambil project_id dari field langsung, fallback ke inv.project.id
+    const projectId = inv.project_id || inv.project?.id;
+    if (!projectId) {
+      console.error("project_id tidak ada!");
+      return;
+    }
+    // Route /invitations/edit/:id menggunakan project_id sebagai :id
+    navigate(`/invitations/edit/${inv.project_id}`);
+  };
+
+  const handleView = (inv) => {
+    if (!inv.id) {
+      console.error("inv_id tidak ada untuk view!");
+      return;
+    }
+    // Route /preview/:invId
+    navigate(`/preview/${inv.id}`);
+  };
 
   // fetch invitations + projects + templates
   useEffect(() => {
@@ -286,8 +309,7 @@ const ManageInvite = () => {
         >
           <option value="">📌 Semua Status</option>
           <option value="active">✅ Aktif</option>
-          <option value="expired">⏳ Kedaluwarsa</option>
-          <option value="draft">📝 Draft</option>
+          <option value="inactive">🔴 Nonaktif</option>
         </select>
       </div>
 
@@ -330,10 +352,14 @@ const ManageInvite = () => {
                   <td className="px-4 py-3">{inv.template?.title || "-"}</td>
                   <td className="px-4 py-3">
                     <div className="flex justify-center gap-3">
-                      <button className="px-3 py-1.5 rounded-lg text-blue-600 hover:bg-blue-100 flex items-center gap-1 text-sm transition">
+                      <button
+                      onClick={() => handleEdit(inv)}
+                      className="px-3 py-1.5 rounded-lg text-blue-600 hover:bg-blue-100 flex items-center gap-1 text-sm transition">
                         <FiEdit /> Edit
                       </button>
-                      <button className="px-3 py-1.5 rounded-lg text-green-600 hover:bg-green-100 flex items-center gap-1 text-sm transition">
+                      
+                      <button
+                      onClick={() => handleView(inv)} className="px-3 py-1.5 rounded-lg text-green-600 hover:bg-green-100 flex items-center gap-1 text-sm transition">
                         <FiEye /> View
                       </button>
                       <button

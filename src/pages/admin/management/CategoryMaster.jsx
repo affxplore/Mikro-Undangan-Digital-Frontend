@@ -265,7 +265,7 @@ const handleSaveEdit = async () => {
                <label className="cursor-pointer flex items-center gap-2 text-blue-500">
                  <FaImage />
                  <span>Ganti Icon</span>
-                 <input type="file" accept="image/*" onChange={handleIconChange} className="hidden" />
+                 <input type="file" accept=".png, .jpg, .svg, .webp, image/png, image/jpeg, image/svg+xml, image/webp" onChange={handleIconChange} className="hidden" />
                </label>
              </div>
              <input

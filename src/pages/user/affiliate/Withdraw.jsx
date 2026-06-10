@@ -129,7 +129,11 @@ export default function WithdrawPage({ onBack }) {
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
+<<<<<<< HEAD
+          className="rounded-3xl border border-slate-100 bg-gradient-to-br from-white to-slate-50 shadow-sm overflow-hidden"
+=======
           className="rounded-3xl border border-slate-100 bg-gradien-to-br from-white to-slate-50 shadow-sm overflow-hidden"
+>>>>>>> 8850f48e5a09b0d1f89544b880aff14bec030b6d
         >
           <div className="p-6 grid grid-cols-1 sm:grid-cols-3 gap-4">
             <SummaryItem icon={Wallet} label="Saldo Tersedia" value={currency(MOCK_BALANCE.available)} accent="from-blue-600 to-blue-500" />
@@ -389,7 +393,11 @@ function SummaryItem({ icon: Icon, label, value, accent }) {
         <p className="text-sm text-slate-500">{label}</p>
         <p className="text-xl font-semibold text-slate-900">{value}</p>
       </div>
+<<<<<<< HEAD
+      <div className={cx("h-12 w-12 rounded-2xl text-white flex items-center justify-center bg-gradient-to-br shadow-inner", accent)}>
+=======
       <div className={cx("h-12 w-12 rounded-2xl text-white flex items-center justify-center bg-gradien-to-br shadow-inner", accent)}>
+>>>>>>> 8850f48e5a09b0d1f89544b880aff14bec030b6d
         <Wallet className="h-6 w-6" />
       </div>
     </div>

@@ -17,7 +17,15 @@ const apiTemp = {
   },
   create: (payload) => {
     console.log("🌐 [apiTemp] POST /templates with payload:", payload);
+<<<<<<< HEAD
+    return apiService.post(API_URL, payload, {
+      headers: {
+        // penting: kosongkan Content-Type agar otomatis multipart
+      },
+    });
+=======
     return apiService.post(API_URL, payload);
+>>>>>>> 8850f48e5a09b0d1f89544b880aff14bec030b6d
   },
   update: (id, payload) => {
     console.log("🌐 [apiTemp] PUT /templates/" + id + " with payload:", payload);
@@ -71,6 +79,11 @@ export default function useTemplates() {
         }
 
         console.log("🚀 [useTemplates] Mengirim parameter ke API:", queryParams);
+<<<<<<< HEAD
+        
+        const res = await apiTemp.getList(queryParams);
+        console.log("📡 [useTemplates] Raw API Response status:", res.status);
+=======
         console.log("🚀 [useTemplates] Filter object:", filter);
         console.log("🚀 [useTemplates] Sort parameter:", params.sort);
         
@@ -98,6 +111,7 @@ export default function useTemplates() {
         console.log("📡 [useTemplates] Raw API Response:", res);
         console.log("📡 [useTemplates] Response Status:", res.status);
         console.log("📡 [useTemplates] Response Data Structure:", res.data);
+>>>>>>> 8850f48e5a09b0d1f89544b880aff14bec030b6d
 
         // Cek apakah response valid
         if (!res.data) {
@@ -195,8 +209,15 @@ export default function useTemplates() {
       console.log("🔍 [useTemplates] GetById mapped result:", result);
       return result; // Kembalikan data yang sudah di-map
     } catch (err) {
+<<<<<<< HEAD
+      const errorMessage = err.response?.data?.message || "Gagal menghapus template";
+      console.error("❌ [useTemplates] Error in getById:", errorMessage);
+      setError(errorMessage);
+      err.displayMessage = errorMessage;
+=======
       console.error("❌ [useTemplates] Error in getById:", err);
       setError(err);
+>>>>>>> 8850f48e5a09b0d1f89544b880aff14bec030b6d
       throw err;
     } finally {
       setLoading(false);
@@ -253,6 +274,36 @@ const create = useCallback(async (templateData) => {
   }, []);
 
   // Fungsi untuk menghapus data
+<<<<<<< HEAD
+  const remove = useCallback(async (id) => {
+  console.log("🗑️ [useTemplates] Removing template ID:", id);
+  setLoading(true);
+  setError(null);
+  try {
+    const res = await apiTemp.remove(id); 
+    console.log("🗑️ [useTemplates] Remove response:", res);
+    // await getList(); // Opsional: biasanya refresh dilakukan di UI (ManageTemplateAdmin)
+    return res.data;
+  } catch (err) {
+    // Ambil pesan dari errorResponse backend (biasanya err.response.data.message)
+    const responseData = err.response?.data;
+    
+    const backendMessage = 
+      responseData?.meta?.message || 
+      responseData?.message ||
+    "Gagal menghapus template.";
+
+    console.error("❌ [useTemplates] Pesan asli dari backend:", backendMessage);
+
+    const customError = new Error(backendMessage);
+    customError.status = err.response?.status;
+
+    throw customError; // Lempar agar ditangkap .catch() di ManageTemplateAdmin.jsx
+  } finally {
+    setLoading(false);
+  }
+}, [getList]);
+=======
    const remove = useCallback(async (id) => {
     console.log("🗑️ [useTemplates] Removing template ID:", id);
     setLoading(true);
@@ -268,6 +319,7 @@ const create = useCallback(async (templateData) => {
       setLoading(false);
     }
   }, []);
+>>>>>>> 8850f48e5a09b0d1f89544b880aff14bec030b6d
 
   return {
     data,

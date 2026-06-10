@@ -11,15 +11,26 @@ const LandingNav = ({ currentSlide = 0 }) => {
   const appName = import.meta.env.VITE_APP_NAME || "Mikro Undangan";
 
   useEffect(() => {
-    const handleScroll = () => {
-      setHasBackground(window.scrollY > 20);
-    };
+    const isHomePage = location.pathname === "/";
 
-    handleScroll(); // cek posisi awal
-    window.addEventListener("scroll", handleScroll);
+    if (isHomePage) {
+      // pakai swiper di home
+      setHasBackground(currentSlide > 0);
+    } else {
+      // pakai scroll listener di page lain
+      const handleScroll = () => {
+        if (window.scrollY > 20) {
+          setHasBackground(true);
+        } else {
+          setHasBackground(false);
+        }
+      };
 
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+      handleScroll(); // cek langsung posisi awal
+      window.addEventListener("scroll", handleScroll);
+      return () => window.removeEventListener("scroll", handleScroll);
+    }
+  }, [currentSlide, location]);
 
   // Efek untuk mengambil URL logo dari system content
   useEffect(() => {
@@ -37,11 +48,11 @@ const LandingNav = ({ currentSlide = 0 }) => {
   return (
     <div
       className={`pointer-events-none fixed left-0 right-0 top-0 z-50 flex items-center justify-between px-6 py-4 transition-colors duration-300 ${
-        hasBackground ? "bg-blue-300/80 backdrop-blur-sm shadow-sm" : ""
+        hasBackground ? "bg-blue-300/80 backdrop-blur-sm shadow-sm" : "bg-transparent"
       }`}
     >
       <div className="pointer-events-auto flex items-center gap-2">
-        <img src="src/assets/logo/mikroUD-logo.png" alt="Logo" className="w-8 h-8 rounded-lg" />
+        <img src={logoUrl} alt="Logo" className="w-8 h-8 rounded-lg" />
         <a href="/" className="text-sm font-semibold tracking-wide text-black">
           {appName}
         </a>
@@ -84,3 +95,4 @@ const LandingNav = ({ currentSlide = 0 }) => {
 };
 
 export default LandingNav;
+ 

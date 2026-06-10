@@ -28,7 +28,11 @@ export default function useSubscriptionWithPrices() {
         }
       }
 
+<<<<<<< HEAD
+      const res = await apiService.post(`${API_URL}`, payload);
+=======
       const res = await apiService.post(`${API_URL}/with-prices`, payload);
+>>>>>>> 8850f48e5a09b0d1f89544b880aff14bec030b6d
       return fromBackend(res.data.data);
     } catch (err) {
       console.error('Error creating subscription with prices:', err.response?.data);
@@ -84,7 +88,11 @@ export default function useSubscriptionWithPrices() {
         }
       }
 
+<<<<<<< HEAD
+      const res = await apiService.put(`${API_URL}/${id}`, payload);
+=======
       const res = await apiService.put(`${API_URL}/${id}/with-prices`, payload);
+>>>>>>> 8850f48e5a09b0d1f89544b880aff14bec030b6d
       return fromBackend(res.data.data);
     } catch (err) {
       console.error('Error updating subscription with prices:', err.response?.data);

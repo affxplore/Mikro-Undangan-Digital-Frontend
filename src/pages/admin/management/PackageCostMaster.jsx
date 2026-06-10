@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import useDiscount from "../../../api/discount/useDiscount";
 import Pagination from "../../../components/Pagination";
@@ -75,7 +75,7 @@ export default function PackageCostPage() {
       setForm({ id: null, name: "", promo: "", voucher: "" });
       getList({ page: pagination.currentPage, limit: pagination.limit });
     } catch (err) {
-      const message = err?.response?.data?.message || err?.message || "Terjadi kesalahan saat menyimpan paket.";
+      const message = err?.response?.data?.errors || err?.response?.data?.message || err?.message || "Terjadi kesalahan saat menyimpan paket.";
       toast.error(message);
     }
   };
@@ -108,7 +108,7 @@ export default function PackageCostPage() {
       getList({ page: pagination.currentPage, limit: pagination.limit });
       setConfirmDialog({ open: false, pkg: null });
     } catch (err) {
-      const message = err?.response?.data?.message || err?.message || "Terjadi kesalahan saat menghapus paket.";
+      const message = err?.response?.data?.errors || err?.response?.data?.message || err?.message || "Terjadi kesalahan saat menghapus paket.";
       toast.error(message);
     } finally {
       setConfirmLoading(false);

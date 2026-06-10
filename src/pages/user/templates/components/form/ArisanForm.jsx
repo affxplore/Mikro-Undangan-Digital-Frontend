@@ -1,5 +1,17 @@
 export default function ArisanForm({ formData, handleChange }) {
   return (
+<<<<<<< HEAD
+    <div>
+      <label className="block text-sm font-medium text-blue-700">Nama Grup Arisan</label>
+      <input
+        type="text"
+        name="namaGrup"
+        value={formData.namaGrup || ""}
+        onChange={handleChange}
+        className="border rounded px-3 py-2 w-full"
+        required
+      />
+=======
     <div className="space-y-4">
       <div>
         <label className="block text-sm font-semibold text-gray-700 mb-1">Nama Grup Arisan</label>
@@ -13,6 +25,7 @@ export default function ArisanForm({ formData, handleChange }) {
           required
         />
       </div>
+>>>>>>> 8850f48e5a09b0d1f89544b880aff14bec030b6d
     </div>
   );
 }

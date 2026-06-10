@@ -268,6 +268,37 @@ export default function SharePage() {
                       <td className="p-3 text-slate-600">{guest.phoneNumber}</td>
                       <td className="p-3">
                         <button 
+<<<<<<< HEAD
+                           onClick={async () => {
+                             const personalLink = `${shareLink}?guest_code=${guest.code}`;
+
+                             const messageTemplate = pesan || "Assalamualaikum Wr. Wb.\nTanpa mengurangi rasa hormat, kami mengundang Bapak/Ibu/Saudara/i {nama_tamu} untuk hadir di acara kami.\n\nInfo selengkapnya: {link_undangan}";
+
+                             const finalMessage = messageTemplate
+                               .replace(/{nama_tamu}/g, guest.recipient)
+                               .replace(/{link_undangan}/g, personalLink);
+
+                             // Membersihkan nomor telepon sebelum membuat link WA
+                             const cleanPhoneNumber = String(guest.phoneNumber).replace(/[^0-9]/g, '');
+                             const waUrl = `https://wa.me/${cleanPhoneNumber}?text=${encodeURIComponent(finalMessage)}`;
+                             window.open(waUrl, '_blank');
+
+                             const payload = { ...guest, status: 'delivered' };
+                             console.log('[Share] Attempting to mark guest as delivered', { id: guest.id, payload });
+
+                             try {
+                               const updatedGuest = await update(guest.id, payload);
+                               console.log('[Share] Status update response', updatedGuest);
+                               refreshGuestList();
+                             } catch (error) {
+                               console.error('[Share] Failed to update guest status', error);
+                               toast.error("Gagal update status tamu.");
+                             }
+                           }}
+                           className="p-2 bg-green-100 text-green-700 rounded-lg hover:bg-green-200"
+                        >
+                           <Send size={16} />
+=======
                           onClick={async () => {
                             const personalLink = `${shareLink}?guest_code=${guest.code}`;
 
@@ -297,6 +328,7 @@ export default function SharePage() {
                           className="p-2 bg-green-100 text-green-700 rounded-lg hover:bg-green-200"
                         >
                           <Send size={16} />
+>>>>>>> 8850f48e5a09b0d1f89544b880aff14bec030b6d
                         </button>
                       </td>
                     </tr>

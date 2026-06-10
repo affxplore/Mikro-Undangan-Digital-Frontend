@@ -8,18 +8,19 @@ import Swal from "sweetalert2";
 import useSubscription from "../../../api/subscription/useSubscription";
 import useSubscriptionWithPrices from "../../../api/subscription/useSubscriptionWithPrices";
 import usePrices from "../../../api/price/usePrice";
+import { interval } from "date-fns";
 
 // --- Komponen Modal (Diperbarui untuk menangani data real) ---
 const SubscriptionModal = ({ isOpen, initialData, onSave, onCancel, refreshList, updateWithPrices }) => {
   const [form, setForm] = useState({
-    slug: "", 
-    name: "", 
-    description: "", 
-    invitation_limit: 1, 
-    allow_branding_removal: false, 
-    prices: [],
-    ...initialData
-  });
+  id: initialData?.id || null,
+  slug: initialData?.slug || "",
+  name: initialData?.name || "",
+  description: initialData?.description || "",
+  invitation_limit: Number(initialData?.invitation_limit) || 1,
+  allow_branding_removal: Boolean(initialData?.allow_branding_removal),
+  prices: Array.isArray(initialData?.prices) ? [...initialData.prices] : [],
+});
   const { loading: priceLoading } = usePrices();
   const [newPrice, setNewPrice] = useState({ 
     amount: '', 
@@ -64,54 +65,71 @@ const SubscriptionModal = ({ isOpen, initialData, onSave, onCancel, refreshList,
     onSave(form, newPrice); // Passing newPrice state to parent
   };
 
-  const handleAddPrice = async () => {
-    try {
-      if (!initialData?.id || !newPrice.amount) {
-        toast.error("Harga harus diisi."); 
-        return;
-      }
-
-      // Validasi input
-      const amount = Number(newPrice.amount);
-      if (isNaN(amount) || amount <= 0) {
-        toast.error("Harga harus berupa angka positif");
-        return;
-      }
-
-      // Validasi interval yang sama
-      const existingPriceWithInterval = form.prices.find(p => p.interval === newPrice.interval);
-      if (existingPriceWithInterval) {
-        toast.error(`Harga untuk periode ${newPrice.interval === 'month' ? 'bulanan' : 'tahunan'} sudah ada`);
-        return;
-      }
-
-      // Update prices lokal
-      const updatedPrices = [
-        ...form.prices,
-        {
-          amount: amount,
-          interval: newPrice.interval
-        }
-      ];
-
-      // Update subscription dengan prices baru
-      await updateWithPrices(initialData.id, {
-        ...form,
-        prices: updatedPrices
-      });
-
-      // Reset form harga
-      setNewPrice({ amount: '', interval: 'month' });
-      
-      // Refresh data
-      await refreshList();
-      
-      toast.success("Harga berhasil ditambahkan!");
-    } catch (error) {
-      console.error('Error adding price:', error);
-      toast.error(error.response?.data?.message || "Gagal menambah harga");
+const handleAddPrice = async () => {
+  try {
+    if (!initialData?.id) {
+      toast.error("Simpan paket terlebih dahulu.");
+      return;
     }
-  };
+
+    // 1. Ambil Amount (hilangkan titik pemisah ribuan jika ada)
+    const amountStr = String(newPrice.amount).replace(/\./g, '');
+    const amount = parseFloat(amountStr);
+    
+    if (isNaN(amount) || amount <= 0) {
+      toast.error("Harga harus berupa angka positif");
+      return;
+    }
+
+    // 2. Ambil Interval (pastikan tidak kosong)
+    const selectedInterval = newPrice.interval || 'month';
+
+    // 3. SANITASI DATA LAMA: Paksa data lama menjadi format murni string
+    // Ini krusial agar tidak mengirim [object Object] ke backend
+    const cleanedExistingPrices = (form.prices || []).map(p => {
+      let finalInterval = p.interval;
+      if (typeof p.interval === 'object' && p.interval !== null) {
+        finalInterval = p.interval.interval; // Ambil string dari dalam objek
+      }
+      return {
+        amount: parseFloat(p.amount),
+        interval: finalInterval
+      };
+    });
+
+    // 4. Validasi Duplikasi
+    if (cleanedExistingPrices.some(p => p.interval === selectedInterval)) {
+      toast.error(`Harga ${selectedInterval === 'month' ? 'Bulanan' : 'Tahunan'} sudah ada.`);
+      return;
+    }
+
+    // 5. Susun Payload Akhir (Pastikan semua field bersih)
+    const payload = {
+      ...form,
+      invitation_limit: parseInt(form.invitation_limit, 10),
+      prices: [
+        ...cleanedExistingPrices,
+        { amount: amount, interval: selectedInterval }
+      ]
+    };
+
+    // 6. Kirim ke API
+    const response = await updateWithPrices(initialData.id, payload);
+
+    if (response) {
+      // Masalah No 2: Pastikan state form diupdate agar UI Manajemen Harga ikut update
+      setForm(response); 
+      setNewPrice({ amount: '', interval: 'month' });
+      toast.success("Harga berhasil ditambahkan!");
+    }
+    
+    await refreshList(); // Sinkronisasi list utama
+
+  } catch (error) {
+    const msg = error.response?.data?.message || "Gagal menambah harga";
+    toast.error(msg);
+  }
+};
 
   const handleDeletePrice = async (priceId) => {
     try {
@@ -136,14 +154,19 @@ const SubscriptionModal = ({ isOpen, initialData, onSave, onCancel, refreshList,
           prices: updatedPrices
         });
 
+        // FIX BUG #3b: Update state lokal agar modal langsung konsisten tanpa tutup-buka ulang
+        setForm(prev => ({ ...prev, prices: updatedPrices }));
+
         await refreshList();
         toast.success("Harga berhasil dihapus!");
       }
     } catch (error) {
       console.error('Error deleting price:', error);
-      toast.error(error.response?.data?.message || "Gagal menghapus harga");
+      const message = error?.response?.data?.errors || error?.response?.data?.message || error?.message || "Gagal menghapus harga";
+      toast.error(message);
     }
-  }
+  };
+
 
   if (!isOpen) return null;
 
@@ -172,7 +195,7 @@ const SubscriptionModal = ({ isOpen, initialData, onSave, onCancel, refreshList,
                   {form.prices?.length > 0 ? (
                     form.prices.map(price => (
                       <div key={price.id} className="flex justify-between items-center p-2 bg-gray-50 rounded mb-2">
-                        <span>{price.interval === 'month' ? 'Bulanan' : 'Tahunan'}: Rp {Number(price.amount).toLocaleString('id-ID')}</span>
+                        <span>{(typeof price.interval === 'object' ? price.interval.interval : price.interval) === 'month' ? 'Bulanan' : 'Tahunan' }: Rp {Number(price.amount).toLocaleString('id-ID')}</span>
                         <button type="button" onClick={() => handleDeletePrice(price.id)} className="p-2 text-red-500 hover:bg-red-100 rounded-full"><FaTrash size={14}/></button>
                       </div>
                     ))
@@ -181,10 +204,18 @@ const SubscriptionModal = ({ isOpen, initialData, onSave, onCancel, refreshList,
                   )}
                   <div className="flex gap-2 mt-2">
                     <input type="number" value={newPrice.amount} onChange={(e) => setNewPrice({...newPrice, amount: e.target.value})} placeholder="Harga Baru" className="flex-grow p-2 border rounded" />
-                    <select value={newPrice.interval} onChange={(e) => setNewPrice({...newPrice, interval: e.target.value})} className="p-2 border rounded">
-                      <option value="month">Bulanan</option>
-                      <option value="year">Tahunan</option>
-                    </select>
+             <select 
+  className="p-2 border rounded"
+  value={newPrice.interval || 'month'} // Menjamin value tidak null
+  onChange={(e) => {
+    const val = e.target.value;
+    console.log("Memilih interval:", val);
+    setNewPrice(prev => ({ ...prev, interval: val }));
+  }}
+>
+  <option value="month">Bulanan</option>
+  <option value="year">Tahunan</option>
+</select>
                     <button type="button" onClick={handleAddPrice} disabled={priceLoading} className="px-4 py-2 bg-green-500 text-white rounded disabled:bg-gray-400"><FaPlus /></button>
                   </div>
                 </>
@@ -259,97 +290,85 @@ export default function SubscriptionPage() {
 
       const invitationLimit = parseInt(subData.invitation_limit, 10);
       if (isNaN(invitationLimit) || invitationLimit < 1) {
-        toast.error("Batas undangan harus berupa angka positif");
+        toast.error("Batas undangan tidak valid");
         return;
       }
 
-      // Bersihkan dan validasi data subscription
-      const cleanData = {
+      // 2. Pemrosesan Array Prices
+      let prices = [];
+
+      if (!subData?.id) {
+        // --- MODE ADD (Buat Baru) ---
+        const monthly = parseFloat(priceData?.monthlyPrice);
+        const yearly = parseFloat(priceData?.yearlyPrice);
+
+        if (monthly > 0) prices.push({ amount: monthly, interval: 'month' });
+        if (yearly > 0) prices.push({ amount: yearly, interval: 'year' });
+
+        if (prices.length === 0) {
+          toast.error("Minimal isi satu harga (Bulanan/Tahunan)");
+          return;
+        }
+      } else {
+        // --- MODE EDIT (Update) ---
+        // PENTING: Sertakan ID price agar backend tahu mana yang diupdate/dihapus
+        prices = (subData.prices || []).map(p => {
+          let intervalValue = p.interval;
+          if (typeof p.interval === 'object' && p.interval !== null) {
+            intervalValue = p.interval.interval;
+          }
+
+          return {
+            id: p.id, // <--- ID INI HARUS ADA agar tersimpan di database yang sama
+            amount: parseFloat(p.amount),
+            interval: intervalValue
+          };
+        }).filter(p => p.interval === 'month' || p.interval === 'year');
+      }
+
+      // 3. Penyusunan Payload
+      const payload = { 
+        id: subData?.id || null,
         slug: subData.slug.trim(),
         name: subData.name.trim(),
         description: subData.description.trim(),
         invitation_limit: invitationLimit,
-        allow_branding_removal: Boolean(subData.allow_branding_removal)
+        allow_branding_removal: Boolean(subData.allow_branding_removal),
+        prices: prices 
       };
 
-      // Untuk mode add, validasi dan siapkan data harga
-      let prices = [];
-      if (!subData.id) {
-        // Mode create: Validasi harga bulanan dan tahunan
-        const monthlyPrice = parseFloat(priceData.monthlyPrice);
-        const yearlyPrice = parseFloat(priceData.yearlyPrice);
+      console.log('Payload Final ke API:', payload);
 
-        if (isNaN(monthlyPrice) || monthlyPrice <= 0) {
-          toast.error("Harga bulanan harus diisi dengan nilai positif");
-          return;
-        }
-
-        if (isNaN(yearlyPrice) || yearlyPrice <= 0) {
-          toast.error("Harga tahunan harus diisi dengan nilai positif");
-          return;
-        }
-
-        prices = [
-          { amount: monthlyPrice, interval: 'month' },
-          { amount: yearlyPrice, interval: 'year' }
-        ];
-      } else {
-        // Untuk mode edit, gunakan prices yang ada
-        prices = subData.prices || [];
-      }
-
-      // Siapkan payload final dengan prices
-      const payload = {
-        ...cleanData,
-        prices: prices
-      };
-
+      // 4. Eksekusi API
       let savedData;
       if (subData.id) {
-        // Mode update: Update subscription dengan prices
-        console.log('Updating subscription with prices:', subData.id, payload);
+        // Update
         savedData = await updateWithPrices(subData.id, payload);
       } else {
-        // Mode create: Buat subscription dengan prices
-        console.log('Creating subscription with prices:', payload);
+        // Create
         savedData = await createWithPrices(payload);
       }
       
-      setShowModal(false);
-      await getList(); // Refresh daftar
+      // 5. Finalisasi UI
+      if (savedData) {
+      await getList(); // Pastikan list di-refresh
       
-      // Update selected item jika sedang dalam mode edit
       if (subData.id) {
         setSelected(savedData);
+      } else {
+        setSelected(null);
       }
       
-      toast.success(subData.id ? "Paket berhasil diperbarui!" : "Paket baru berhasil dibuat!");
+      toast.success(subData.id ? "Paket diperbarui!" : "Paket berhasil dibuat!");
+      setShowModal(false);
+    }
+
     } catch (error) {
       console.error('Error saving subscription:', error);
-      
-      // Handle different types of errors
-      let errorMessage = "Gagal menyimpan paket. Silakan coba lagi.";
-      
-      if (error.message) {
-        // Custom validation errors or processed backend errors
-        errorMessage = error.message;
-      } else if (error.response?.data) {
-        // Backend API errors
-        if (error.response.data.meta?.message) {
-          errorMessage = error.response.data.meta.message;
-        } else if (error.response.data.message) {
-          errorMessage = error.response.data.message;
-        } else if (typeof error.response.data === 'string') {
-          // Handle HTML error responses
-          if (error.response.data.includes('Transaction cannot be rolled back')) {
-            errorMessage = "Terjadi kesalahan pada database. Silakan coba lagi atau hubungi administrator.";
-          }
-        }
-      }
-      
-      toast.error(errorMessage);
+      const msg = error?.response?.data?.message || error?.message || "Gagal menyimpan paket";
+      toast.error(msg);
     }
-  };
+  }; // Pastikan penutup fungsi ini benar
 
   const handleDelete = async () => {
     if (!selected) return;
@@ -511,4 +530,4 @@ export default function SubscriptionPage() {
       )}
     </div>
   );
-}
+};

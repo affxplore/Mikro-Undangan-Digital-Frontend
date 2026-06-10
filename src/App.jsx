@@ -9,7 +9,11 @@ import ResetPasswordPage from "./pages/login_page/ResetPassword";
 import MikroUndangan from "./pages/landing_page/Land";
 
 // Menu User
+<<<<<<< HEAD
+import DashboardUser from "./pages/user/dashboard/User";
+=======
 import DashboardUser from "./pages/user/dashboard/user";
+>>>>>>> 8850f48e5a09b0d1f89544b880aff14bec030b6d
 import UcapanPage from "./pages/user/ucapan-doa/Ucapan";
 import UpgradePage from "./pages/user/payment/Upgrade";
 import AccountSetting from "./pages/user/profile/Account_setting";
@@ -71,7 +75,14 @@ import { PublicOnly, RequireRole } from "./middleware/RouteMiddleware";
 import OtpPage from "./pages/registration_page/OTP";
 import PreviewPage from "./pages/user/invitations/preview/PreviewPage";
 
+<<<<<<< HEAD
+import { useNavigate } from "react-router-dom";
+
 function App() {
+  const navigate = useNavigate();
+=======
+function App() {
+>>>>>>> 8850f48e5a09b0d1f89544b880aff14bec030b6d
   return (
     <>
       <Routes>
@@ -95,7 +106,21 @@ function App() {
           <Route path="price" element={<PricingPage />} />
           <Route path="checkout" element={<Checkout />} />
         </Route>
+<<<<<<< HEAD
+        
         {/* </Route> */}
+        <Route path="/unauthorized" element={
+  <div className="flex flex-col items-center justify-center h-screen">
+    <h1 className="text-2xl font-bold text-red-500">⛔ Akses Ditolak</h1>
+    <p className="text-gray-500 mt-2">Kamu tidak punya izin untuk mengakses halaman ini.</p>
+    <button onClick={() => navigate(-1)} className="mt-4 px-4 py-2 bg-blue-500 text-white rounded">
+      Kembali
+    </button>
+  </div>
+} />
+=======
+        {/* </Route> */}
+>>>>>>> 8850f48e5a09b0d1f89544b880aff14bec030b6d
 
         {/* Route All Role */}
         <Route
@@ -145,9 +170,15 @@ function App() {
           <Route path="/dashboardadmin" element={<DashboardLayout />}>
             <Route index element={<DashboardAdmin />} />
             <Route path="dashboardadmin" element={<DashboardAdmin />} />
+<<<<<<< HEAD
+             <Route path="accountset" element={<AccountSetting />} />
+            <Route path="profile" element={<ProfilePage />} />
+       
+=======
             <Route path="accountset" element={<AccountSetting />} />
             <Route path="profile" element={<ProfilePage />} />
     
+>>>>>>> 8850f48e5a09b0d1f89544b880aff14bec030b6d
             <Route path="manageinvit" element={<ManageInvite />} />
             <Route path="manageuser" element={<ManageUser />} />
             <Route path="managetemplate" element={<ManageTemplate />} />

@@ -1,4 +1,3 @@
-import axios from "axios";
 /* eslint-disable no-unused-vars */
 import React, { useState, useRef, useCallback } from "react";
 
@@ -46,52 +45,22 @@ export default function SystemSetting() {
   // Mock: Simpan konfigurasi per-section
   async function handleSave(section) {
     try {
-      showToast("Menyimpan ke database...", "info");
-
-      // Menyiapkan data yang akan dikirim
-      // Kita mengambil nilai dari useRef (.current.value)
-      const configData = {
-        section: section,
-        // Diambil dari useRef (Gunakan .value)
-        domain: domainRef.current?.value,
-        smtpHost: smtpHostRef.current?.value,
-        smtpPort: smtpPortRef.current?.value,
-        smtpUser: smtpUserRef.current?.value,
-        smtpPass: smtpPassRef.current?.value,
-        fromEmail: fromEmailRef.current?.value,
-        // Diambil dari useState (langsung panggil variabelnya)
-        paymentProvider,
-        paymentApiKey,
-        paymentMode,
-        enableCaptcha,
-        maxAttempts,
-        blockDurationMin
-      };
-
-      // Memanggil API Backend (Sesuaikan port backend kamu, misal 5000)
-      const response = await axios.post("http://localhost:5000/api/system-setting/save", configData);
-
-      if (response.data.success) {
-        showToast(`Konfigurasi ${section} berhasil disimpan ke database!`, "success");
-      } else {
-        showToast("Gagal menyimpan: " + response.data.message, "error");
-      }
-      } catch (err) {
-      console.error("Error Detail:", err);
-      showToast("Gagal menyambung ke server backend.", "error");
-      }
+      showToast("Menyimpan...", "info");
+      // Simulasi delay
+      await new Promise((r) => setTimeout(r, 800));
+      showToast(`Konfigurasi ${section} berhasil disimpan.`, "success");
+      // TODO: panggil API backend untuk menyimpan
+    } catch (err) {
+      showToast("Gagal menyimpan konfigurasi.", "error");
     }
-      
+  }
 
   // Mock: Test koneksi SMTP
   async function handleTestSMTP() {
     showToast("Menguji koneksi SMTP...", "info");
     await new Promise((r) => setTimeout(r, 1000));
-    // ambil nilai dari ref untuk validasi
-    const host = smtpHostRef.current?.value;
-    const email = fromEmailRef.current?.value;
     // Contoh aturan validasi singkat
-    if (!host || !email) {
+    if (!smtpHost || !fromEmail) {
       showToast("Host SMTP dan From Email harus diisi.", "error");
       return;
     }

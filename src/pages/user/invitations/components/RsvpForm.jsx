@@ -48,6 +48,27 @@ export default function RsvpForm({ invitationId, guestCode }) {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+<<<<<<< HEAD
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!formData.guest_name) {
+      toast.error("Nama wajib diisi.");
+      return;
+    }
+    try {
+      const payload = {
+        ...formData,
+        invitation_id: invitationId,
+        guest_code: guestCode, // Kirim guest_code ke backend untuk menautkan data
+      };
+      await createUcapan(payload);
+      setIsSubmitted(true);
+      toast.success("Terima kasih, ucapan Anda telah kami terima!");
+    } catch (err) {
+      toast.error("Gagal mengirim ucapan.");
+    }
+  };
+=======
 const handleSubmit = async (e) => {
   e.preventDefault();
   
@@ -70,6 +91,7 @@ const handleSubmit = async (e) => {
     toast.error(err.response?.data?.message || "Gagal mengirim ucapan.");
   }
 };
+>>>>>>> 8850f48e5a09b0d1f89544b880aff14bec030b6d
 
   if (isSubmitted) {
     return (

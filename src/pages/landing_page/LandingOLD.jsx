@@ -33,10 +33,17 @@ export default function LandingPage() {
   return (
     <>
       {/* Navbar */}
+<<<<<<< HEAD
+     
+
+      {/* Hero */}
+      <header className="pt-24 pb-16 bg-gradient-to-br from-blue-300 to-white">
+=======
     
 
       {/* Hero */}
       <header className="pt-24 pb-16 bg-gradien-to-br from-blue-300 to-white">
+>>>>>>> 8850f48e5a09b0d1f89544b880aff14bec030b6d
         <div className="max-w-6xl mx-auto px-4 flex flex-col lg:flex-row items-center gap-8">
           <div className="flex-1">
             <h1 className="text-4xl lg:text-5xl font-extrabold mb-4 text-blue-600">Buat Undangan Online Cepat Tanpa Ribet..</h1>
